@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:living_room_light_demo/ui/widget/curved_navigation_bar.dart';
 import 'package:living_room_light_demo/utils/colors.dart';
 import 'package:living_room_light_demo/utils/dimensions.dart';
 import 'package:living_room_light_demo/utils/strings.dart';
 import 'package:living_room_light_demo/utils/styles.dart';
 
+import 'bottom_sheet_ui.dart';
 import 'bulb_custom_painter.dart';
 
 class LivingRoomScreen extends StatefulWidget {
@@ -68,12 +70,15 @@ class MainBody extends StatefulWidget {
 }
 
 class _MainBodyState extends State<MainBody> {
+  GlobalKey<CurvedNavigationBarState> bottomNavigationKey = GlobalKey();
   ValueNotifier<List<double>> posValueListener = ValueNotifier([0.0, 0.0]);
   ValueChanged<List<double>>? posValueChanged;
   double _horizontalPos = 0.0;
   double _verticalPos = 0.0;
   bool isSwitched = false;
-
+  Color selectedColor = Colors.red;
+  Color selectedGradientColor = Colors.red;
+  int page = 0;
   @override
   void initState() {
     posValueListener.addListener(() {
@@ -126,7 +131,7 @@ class _MainBodyState extends State<MainBody> {
             painter: BulbCustomPainter(
               color1: const Color(0xffFCEEAE).withOpacity(_horizontalPos),
               color2: const Color(0xffFFFF72).withOpacity(_horizontalPos),
-              color3: const Color(0xffFBB03B).withOpacity(_horizontalPos),
+              color3: selectedColor.withOpacity(_horizontalPos),
             ),
             child: Container(),
           ),
@@ -202,7 +207,71 @@ class _MainBodyState extends State<MainBody> {
               })
             ],
           ),
-        )
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: CurvedNavigationBar(
+            key: bottomNavigationKey,
+            index: 0,
+            height: 60.0,
+            items: const <Widget>[
+              CircleAvatar(
+                backgroundColor: AppColors.redColor,
+                maxRadius: 15,
+              ),
+              CircleAvatar(
+                backgroundColor: AppColors.yellowColor,
+                maxRadius: 15,
+              ),
+              CircleAvatar(
+                backgroundColor: AppColors.cyanColor,
+                maxRadius: 15,
+              ),
+              CircleAvatar(
+                backgroundColor: AppColors.blueColor,
+                maxRadius: 15,
+              ),
+              CircleAvatar(
+                backgroundColor: AppColors.purpleColor,
+                maxRadius: 15,
+              ),
+            ],
+            color: AppColors.lightBlackColor,
+            buttonBackgroundColor: Colors.transparent,
+            backgroundColor: AppColors.transparent,
+            animationCurve: Curves.easeInOut,
+            animationDuration: const Duration(milliseconds: 600),
+            onTap: (index) {
+              switch (index) {
+                case 0:
+                  selectedColor = AppColors.redColor;
+                  break;
+
+                case 1:
+                  selectedColor = AppColors.yellowColor;
+                  break;
+
+                case 2:
+                  selectedColor = AppColors.cyanColor;
+                  break;
+
+                case 3:
+                  selectedColor = AppColors.blueColor;
+                  break;
+
+                case 4:
+                  selectedColor = AppColors.purpleColor;
+                  break;
+              }
+            },
+            letIndexChange: (index) => true,
+          ),
+        ),
+        Container(
+          height: MediaQuery.of(context).size.height / 3.04,
+          width: double.infinity,
+          color: AppColors.lightBlackColor,
+        ),
       ],
     );
   }
