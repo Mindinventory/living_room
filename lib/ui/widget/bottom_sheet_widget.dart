@@ -92,7 +92,6 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
   }
 
   void selectColor(int index) {
-    final index= tabType.index;
     switch (index) {
       case 0:
         MainBody.selectedColor = AppColors.redColor;
