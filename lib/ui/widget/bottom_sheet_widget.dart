@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:living_room_light_demo/cubit/living_room_cubit/living_room_cubit.dart';
 import 'package:living_room_light_demo/ui/custom_painter/curved_navigation_bar.dart';
+import 'package:living_room_light_demo/utils/assets.dart';
 import 'package:living_room_light_demo/utils/colors.dart';
 import 'package:living_room_light_demo/utils/dimensions.dart';
 import 'package:living_room_light_demo/utils/strings.dart';
@@ -9,22 +10,20 @@ import 'package:living_room_light_demo/utils/styles.dart';
 import '../living_room_screen.dart';
 
 class BottomSheetWidget extends StatefulWidget {
-  const BottomSheetWidget({Key? key, this.isSwitched}) : super(key: key);
-  final bool? isSwitched;
+  const BottomSheetWidget({Key? key, this.isLightOn = false}) : super(key: key);
+  final bool isLightOn;
   @override
   _BottomSheetWidgetState createState() => _BottomSheetWidgetState();
 }
 
 class _BottomSheetWidgetState extends State<BottomSheetWidget> {
   GlobalKey<CurvedNavigationBarState> bottomNavigationKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         CurvedNavigationBar(
           key: bottomNavigationKey,
-          index: 0,
           height: 60.0,
           items: const <Widget>[
             CircleUi(
@@ -51,7 +50,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
           onTap: (index) {
             selectColor(index);
           },
-          letIndexChange: (index) => widget.isSwitched!,
+          letIndexChange: (index) => widget.isLightOn,
         ),
         const SizedBox(
           height: 14.95,
@@ -74,13 +73,13 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                 ),
                 const SizedBox(height: Dimens.space_xxxxlarge),
                 const OtherLightWidget(
-                  image: 'assets/globe_lamp.png',
+                  image: AssetsImage.globeLamp,
                   title: Strings.globeLamp,
                   subTitle: Strings.globeLampConfi,
                 ),
                 const SizedBox(height: Dimens.space_large),
                 const OtherLightWidget(
-                  image: 'assets/neon_lamp.png',
+                  image: AssetsImage.neonLamp,
                   title: Strings.neonLamp,
                   subTitle: Strings.neonLampConfi,
                 )
@@ -93,6 +92,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
   }
 
   void selectColor(int index) {
+    final index= tabType.index;
     switch (index) {
       case 0:
         MainBody.selectedColor = AppColors.redColor;
@@ -152,12 +152,12 @@ class CircleUi extends StatelessWidget {
 }
 
 class OtherLightWidget extends StatelessWidget {
-  const OtherLightWidget({Key? key, this.image, this.title, this.subTitle})
+  const OtherLightWidget({Key? key, required this.image, required this.title, required this.subTitle})
       : super(key: key);
 
-  final String? image;
-  final String? title;
-  final String? subTitle;
+  final String image;
+  final String title;
+  final String subTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -178,20 +178,20 @@ class OtherLightWidget extends StatelessWidget {
               CircleAvatar(
                 backgroundColor: AppColors.mintGreenColor,
                 child: Image.asset(
-                  image ?? 'assets/globe_lamp.png',
+                  image,
                   height: 15,
                 ),
               ),
               const SizedBox(width: Dimens.space_large),
               Text(
-                title ?? '',
+                title,
                 style: TextStyles.k20GooglePoppinsNormal
                     .copyWith(fontSize: Dimens.text_medium),
               ),
             ],
           ),
           Text(
-            subTitle ?? '',
+            subTitle,
             style: TextStyles.k20GooglePoppinsNormal
                 .copyWith(fontSize: Dimens.text_small),
           ),

@@ -58,7 +58,7 @@ class MainBody extends StatefulWidget {
 
 class _MainBodyState extends State<MainBody> {
   double _horizontalPos = 0.5;
-  bool isSwitched = true;
+  bool isLightOn = true;
 
   @override
   Widget build(BuildContext context) {
@@ -66,13 +66,13 @@ class _MainBodyState extends State<MainBody> {
       create: (BuildContext context) => LivingRoomCubit(LivingRoomState()),
       child: BlocBuilder<LivingRoomCubit, LivingRoomState>(
           builder: (BuildContext context, LivingRoomState state) {
-        if (state is LivingRoomLightOpacityState) {
+        if (state is LivingRoomLightOpacityUpdateState) {
           _horizontalPos = state.horizontalPos!;
         } else if (state is LivingRoomLightSwitchState) {
-          isSwitched = state.isSwitched;
+          isLightOn = state.isOn;
         }
         return BodyWidget(
-          isSwitched: isSwitched,
+          isLightOn: isLightOn,
           horizontalPos: _horizontalPos,
         );
       }),
@@ -81,11 +81,11 @@ class _MainBodyState extends State<MainBody> {
 }
 
 class BodyWidget extends StatelessWidget {
-  const BodyWidget({Key? key, this.horizontalPos = 0.5, this.isSwitched})
+  const BodyWidget({Key? key, this.horizontalPos = 0.5, this.isLightOn = false})
       : super(key: key);
 
-  final double? horizontalPos;
-  final bool? isSwitched;
+  final double horizontalPos;
+  final bool isLightOn;
 
   @override
   Widget build(BuildContext context) {
@@ -104,10 +104,10 @@ class BodyWidget extends StatelessWidget {
                       .copyWith(fontSize: Dimens.text_large),
                 ),
                 Switch(
-                  value: isSwitched!,
+                  value: isLightOn,
                   onChanged: (bool value) {
                     BlocProvider.of<LivingRoomCubit>(context)
-                        .livingRoomLightSwitchChange(isSwitched: value);
+                        .livingRoomLightOnOff(isOn: value);
                   },
                   activeColor: AppColors.white,
                 ),
@@ -119,25 +119,25 @@ class BodyWidget extends StatelessWidget {
             width: Dimens.widthHomeBulb,
             child: CustomPaint(
               painter: BulbCustomPainter(
-                color1: !isSwitched!
+                color1: !isLightOn
                     ? AppColors.greyColor
                     : MainBody.lightSelectedColor
-                        .withOpacity(horizontalPos ?? 0.25),
-                color2: !isSwitched!
+                        .withOpacity(horizontalPos),
+                color2: !isLightOn
                     ? AppColors.greyColor
                     : MainBody.mediumSelectedColor
-                        .withOpacity(horizontalPos ?? 0.45),
-                color3: !isSwitched!
+                        .withOpacity(horizontalPos),
+                color3: !isLightOn
                     ? AppColors.greyColor
-                    : MainBody.selectedColor.withOpacity(horizontalPos ?? 0.5),
+                    : MainBody.selectedColor.withOpacity(horizontalPos),
               ),
               child: Container(),
             ),
           ),
           const SizedBox(height: Dimens.space_xxxlarge),
-          SliderWidget(isSwitched: isSwitched),
+          SliderWidget(isLightOn: isLightOn),
           const SizedBox(height: Dimens.space_xlarge),
-          BottomSheetWidget(isSwitched: isSwitched)
+          BottomSheetWidget(isLightOn: isLightOn)
         ],
       ),
     );

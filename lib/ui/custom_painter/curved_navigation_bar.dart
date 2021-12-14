@@ -152,7 +152,7 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
               child: Row(
                 children: widget.items.map((item) {
                   return NavButton(
-                    onTap: _buttonTap,
+                    onTap: setPage,
                     position: _pos,
                     length: _length,
                     index: widget.items.indexOf(item),
@@ -168,10 +168,6 @@ class CurvedNavigationBarState extends State<CurvedNavigationBar>
   }
 
   void setPage(int index) {
-    _buttonTap(index);
-  }
-
-  void _buttonTap(int index) {
     if (!widget.letIndexChange(index)) {
       return;
     }

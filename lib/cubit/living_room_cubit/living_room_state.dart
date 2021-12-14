@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class LivingRoomState {}
 
-class LivingRoomLightOpacityState extends LivingRoomState {
-  LivingRoomLightOpacityState({
+class LivingRoomLightOpacityUpdateState extends LivingRoomState {
+  LivingRoomLightOpacityUpdateState({
     this.horizontalPos
   });
 
@@ -12,10 +12,10 @@ class LivingRoomLightOpacityState extends LivingRoomState {
 
 class LivingRoomLightSwitchState extends LivingRoomState {
   LivingRoomLightSwitchState({
-    this.isSwitched = false
+    this.isOn = false
   });
 
-  final bool isSwitched;
+  final bool isOn;
 }
 
 class LivingRoomLightColorState extends LivingRoomState {

@@ -4,8 +4,8 @@ import 'package:living_room_light_demo/cubit/living_room_cubit/living_room_cubit
 import '../custom_painter/slider_custom_painter.dart';
 
 class SliderWidget extends StatefulWidget {
-  const SliderWidget({Key? key, this.isSwitched}) : super(key: key);
-  final bool? isSwitched;
+  const SliderWidget({Key? key, this.isLightOn = false}) : super(key: key);
+  final bool isLightOn;
   @override
   State<SliderWidget> createState() => _SliderWidgetState();
 }
@@ -21,7 +21,7 @@ class _SliderWidgetState extends State<SliderWidget> {
     return Builder(builder: (context) {
       return GestureDetector(
         onPanUpdate: (s) {
-          if (widget.isSwitched!) {
+          if (widget.isLightOn) {
             _verticalPos = (_verticalPos + s.delta.dy / (context.size!.height))
                 .clamp(.0, 1.0);
             var horizontalPos =
@@ -37,12 +37,12 @@ class _SliderWidgetState extends State<SliderWidget> {
               }
               if (horizontalPos > 0.062) {
                 BlocProvider.of<LivingRoomCubit>(context)
-                    .livingRoomLightSwitchChange(isSwitched: true);
+                    .livingRoomLightOnOff(isOn: true);
               }
             }
             posValueListener.value = [horizontalPos, _verticalPos];
             BlocProvider.of<LivingRoomCubit>(context)
-                .livingRoomLightOpacityChange(horizontalPos);
+                .didChangedLivingRoomLightOpacity(horizontalPos);
           }
         },
         child: Padding(
@@ -51,7 +51,9 @@ class _SliderWidgetState extends State<SliderWidget> {
             size: Size(MediaQuery.of(context).size.width, 50),
             painter: CustomSlider(
               width: ((MediaQuery.of(context).size.width - 7) *
-                      double.parse(_horizontalPos.toStringAsFixed(3)))
+                      double.parse(
+                        _horizontalPos.toStringAsFixed(3),
+                      ))
                   .floorToDouble(),
             ),
           ),
