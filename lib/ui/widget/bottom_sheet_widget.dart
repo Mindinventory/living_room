@@ -4,6 +4,7 @@ import 'package:living_room_light_demo/cubit/living_room_cubit/living_room_cubit
 import 'package:living_room_light_demo/ui/custom_painter/curved_navigation_bar.dart';
 import 'package:living_room_light_demo/utils/assets.dart';
 import 'package:living_room_light_demo/utils/colors.dart';
+import 'package:living_room_light_demo/utils/constant.dart';
 import 'package:living_room_light_demo/utils/dimensions.dart';
 import 'package:living_room_light_demo/utils/strings.dart';
 import 'package:living_room_light_demo/utils/styles.dart';
@@ -18,6 +19,7 @@ class BottomSheetWidget extends StatefulWidget {
 
 class _BottomSheetWidgetState extends State<BottomSheetWidget> {
   GlobalKey<CurvedNavigationBarState> bottomNavigationKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -92,32 +94,32 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
   }
 
   void selectColor(int index) {
-    switch (index) {
-      case 0:
+    switch (TabColors.values[index]) {
+      case TabColors.red:
         MainBody.selectedColor = AppColors.redColor;
         MainBody.mediumSelectedColor = AppColors.mediumRedColor;
         MainBody.lightSelectedColor = AppColors.lightRedColor;
         break;
 
-      case 1:
+      case TabColors.yellow:
         MainBody.selectedColor = AppColors.yellowColor;
         MainBody.mediumSelectedColor = AppColors.mediumYellowColor;
         MainBody.lightSelectedColor = AppColors.lightYellowColor;
         break;
 
-      case 2:
+      case TabColors.cyan:
         MainBody.selectedColor = AppColors.cyanColor;
         MainBody.mediumSelectedColor = AppColors.mediumCyanColor;
         MainBody.lightSelectedColor = AppColors.lightCyanColor;
         break;
 
-      case 3:
+      case TabColors.blue:
         MainBody.selectedColor = AppColors.blueColor;
         MainBody.mediumSelectedColor = AppColors.mediumBlueColor;
         MainBody.lightSelectedColor = AppColors.lightBlueColor;
         break;
 
-      case 4:
+      case TabColors.purple:
         MainBody.selectedColor = AppColors.purpleColor;
         MainBody.mediumSelectedColor = AppColors.mediumPurpleColor;
         MainBody.lightSelectedColor = AppColors.lightPurpleColor;
@@ -151,7 +153,11 @@ class CircleUi extends StatelessWidget {
 }
 
 class OtherLightWidget extends StatelessWidget {
-  const OtherLightWidget({Key? key, required this.image, required this.title, required this.subTitle})
+  const OtherLightWidget(
+      {Key? key,
+      required this.image,
+      required this.title,
+      required this.subTitle})
       : super(key: key);
 
   final String image;
@@ -163,7 +169,7 @@ class OtherLightWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(Dimens.space_xlarge),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(colors: [
+        gradient: const LinearGradient(colors: <Color>[
           Colors.white12,
           Colors.white10,
         ]),
